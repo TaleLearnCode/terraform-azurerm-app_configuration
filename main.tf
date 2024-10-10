@@ -35,11 +35,11 @@ resource "azurerm_app_configuration" "target" {
 
 resource "azurerm_role_assignment" "app_configuration_data_owners" {
   for_each             = length(var.app_configuration_data_owners) > 0 ? toset(var.app_configuration_data_owners) : toset([])
-  scope                = azurerm_key_vault.key_vault.id
+  scope                = azurerm_app_configuration.target.id
   role_definition_name = "App Configuration Data Owner"
   principal_id         = each.value
 
   depends_on = [
-    azurerm_key_vault.key_vault
+    azurerm_app_configuration.target
   ]
 }
